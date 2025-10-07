@@ -1,0 +1,17 @@
+[
+  {
+    "name": "María García",
+    "user": "mgarcia",
+    "password": "maria123"
+  },
+  {
+    "name": "Juan Pérez",
+    "user": "jperez",
+    "password": "juan123"
+  },
+  {
+    "name": "Ana López",
+    "user": "alopez",
+    "password": "ana123"
+  }
+]
