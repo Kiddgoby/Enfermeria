@@ -80,4 +80,23 @@ final class NurseController extends AbstractController
         // con el código 200 (que va bien)
         return $this->json($nurses, 200);
     }
+    
+    
+    #[Route('/nurse/login', methods: ['POST'])]
+    public function login(Request $request): JsonResponse
+    {
+        $nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
+        $data = json_decode($request->getContent(), true);
+
+        foreach ($nurses as $nurse) {
+            if ($nurse['username'] === ($data['username'] ?? '') &&
+                $nurse['password'] === ($data['password'] ?? '')) {
+            
+                return $this->json(true);
+            }
+        }
+
+        
+        return $this->json(['error' => 'Credenciales inválidas'], 401);
+    }
 }
