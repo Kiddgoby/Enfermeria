@@ -83,7 +83,7 @@ final class NurseController extends AbstractController
     }
     
     
-    #[Route('/nurse/login', methods: ['POST'])]
+    #[Route('/login', methods: ['POST'])]
     public function login(Request $request): JsonResponse
     {
         $nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
