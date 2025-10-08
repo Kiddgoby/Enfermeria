@@ -54,4 +54,28 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Nurse not found'], 404);
         }
     }
+
+    public function getAll(): JsonResponse
+    {
+        // Definimos la ruta absoluta del archivo nurses.json
+        $jDoc = __DIR__ . '/../../public/nurses.json';
+
+        // Verificamos si el archivo existe antes de intentar leerlo
+        if (!file_exists($jDoc)) {
+            // Si no existe, devolvemos una respuesta JSON con un mensaje de error
+            // y el código de estado HTTP 404 (No encontrado)
+            return $this->json(['error' => 'El archivo JSON no existe.'], 404);
+        }
+
+        // Leemos el contenido completo del archivo JSON
+        $jsonContent = file_get_contents($jDoc);
+
+        // Decodificamos el contenido JSON a un array asociativo de PHP
+        // El segundo parámetro "true" hace que devuelva array en lugar de objeto stdClass
+        $nurses = json_decode($jsonContent, true);
+
+        // Si todo va bien, devolvemos el contenido en formato JSON
+        // con el código 200 (que va bien)
+        return $this->json($nurses, 200);
+    }
 }
