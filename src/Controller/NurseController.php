@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/nurse')]
@@ -89,7 +90,7 @@ final class NurseController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         foreach ($nurses as $nurse) {
-            if ($nurse['username'] === ($data['username'] ?? '') &&
+            if ($nurse['user'] === ($data['user'] ?? '') &&
                 $nurse['password'] === ($data['password'] ?? '')) {
             
                 return $this->json(true);

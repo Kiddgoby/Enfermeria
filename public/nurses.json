@@ -1,17 +1,17 @@
 [
   {
-    "name": "María García",
-    "user": "mgarcia",
-    "password": "maria123"
+    "name": "Ana García",
+    "user": "nurse.ana",
+    "password": "1234"
   },
   {
-    "name": "Juan Pérez",
-    "user": "jperez",
-    "password": "juan123"
+    "name": "Luis Pérez",
+    "user": "nurse.luis",
+    "password": "abcd"
   },
   {
-    "name": "Ana López",
-    "user": "alopez",
-    "password": "ana123"
+    "name": "Marta López",
+    "user": "nurse.marta",
+    "password": "pass"
   }
 ]
