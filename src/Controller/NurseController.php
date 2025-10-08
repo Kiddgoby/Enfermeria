@@ -55,6 +55,9 @@ final class NurseController extends AbstractController
         }
     }
 
+
+    // Esta ruta responderá a /nurse/index y se llamará app_nurse_index  
+    #[Route('/index', name: 'index')]
     public function getAll(): JsonResponse
     {
         // Definimos la ruta absoluta del archivo nurses.json
