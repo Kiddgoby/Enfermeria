@@ -1,5 +1,5 @@
-<?php
 
+<?php
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +20,9 @@ final class NurseController extends AbstractController
      * @param string $name
      * @return JsonResponse
      */
+
+    //codigo david
+
     public function findByName(string $name): JsonResponse
     {
         // Relative project path: public/nurses.json
@@ -55,7 +58,7 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Nurse not found'], 404);
         }
     }
-
+    //codigo arnau
     // Esta ruta responderá a /nurse/index y se llamará app_nurse_index  
     #[Route('/index', name: 'index')]
     public function getAll(): JsonResponse
@@ -82,7 +85,7 @@ final class NurseController extends AbstractController
         return $this->json($nurses, 200);
     }
     
-    
+    //Codigo Javier
     #[Route('/login', methods: ['POST'])]
     public function login(Request $request): JsonResponse
     {
@@ -101,3 +104,26 @@ final class NurseController extends AbstractController
         return $this->json(['error' => 'Credenciales inválidas'], 401);
     }
 }
+
+//Codigo de Olalla (Dejamos el de javier)
+/* 
+
+{
+    #[Route(path: '/nurse/login', methods: ['POST'])]
+    
+    public function login(Request $request): JsonResponse
+    {
+        $nurses = json_decode(json: file_get_contents(__DIR__ . '/../../public/nurses.json'), associative: true);
+        $data = json_decode($request->getContent(), true);
+        
+        foreach ($nurses as $nurse) {
+            if ($nurse['username'] === ($data['username'] ?? '') &&
+                $nurse['password'] === ($data['password'] ?? '')) {
+                return $this->json(true);
+            }
+        }
+        return $this->json(['error' => 'Credenciales inválidas'], 401);
+    }
+}
+\*
+ 
