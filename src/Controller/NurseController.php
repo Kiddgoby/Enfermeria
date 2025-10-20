@@ -106,24 +106,25 @@ final class NurseController extends AbstractController
 }
 
 //Codigo de Olalla (Dejamos el de javier)
-/* 
 
-{
-    #[Route(path: '/nurse/login', methods: ['POST'])]
+
+// {
+//     #[Route(path: '/nurse/login', methods: ['POST'])]
     
-    public function login(Request $request): JsonResponse
-    {
-        $nurses = json_decode(json: file_get_contents(__DIR__ . '/../../public/nurses.json'), associative: true);
-        $data = json_decode($request->getContent(), true);
+//     public function login(Request $request): JsonResponse
+//     {
+//         $nurses = json_decode(json: file_get_contents(__DIR__ . '/../../public/nurses.json'), associative: true);
+//         $data = json_decode($request->getContent(), true);
         
-        foreach ($nurses as $nurse) {
-            if ($nurse['username'] === ($data['username'] ?? '') &&
-                $nurse['password'] === ($data['password'] ?? '')) {
-                return $this->json(true);
-            }
-        }
-        return $this->json(['error' => 'Credenciales inválidas'], 401);
-    }
-}
-\*
+//         foreach ($nurses as $nurse) {
+//             if ($nurse['username'] === ($data['username'] ?? '') &&
+//                 $nurse['password'] === ($data['password'] ?? '')) {
+//                 return $this->json(true);
+//             }
+//         }
+//         return $this->json(['error' => 'Credenciales inválidas'], 401);
+//     }
+    
+// }
+
  
