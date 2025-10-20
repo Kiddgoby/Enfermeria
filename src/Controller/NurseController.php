@@ -58,6 +58,7 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Nurse not found'], 404);
         }
     }
+    
     //codigo arnau
     // Esta ruta responderá a /nurse/index y se llamará app_nurse_index  
     #[Route('/index', name: 'index')]
