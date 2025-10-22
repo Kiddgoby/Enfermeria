@@ -4,7 +4,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 #[Route('/nurse')]
 final class NurseController extends AbstractController
@@ -21,7 +23,22 @@ final class NurseController extends AbstractController
      */
 
     //codigo david
+public function dataBase(UserRepository $userRepository): JsonResponse
+{
+$nurses = $userRepository->findAll();
+$data = [];
 
+foreach ($nurses as $nurse) {
+    $data[] = [
+        'id' => $nurse->getId(),
+        'name' => $nurse->getName(),
+        'password' => $nurse->getPassword(),
+        'user' => $nurse->getUser(),
+    ];
+}
+
+return $this->json($data, Response::HTTP_OK);
+}
     public function findByName(string $name): JsonResponse
     {
         // Relative project path: public/nurses.json
@@ -37,7 +54,7 @@ final class NurseController extends AbstractController
         if (is_array($nurses)) {
             foreach ($nurses as $nurse) {
                 // Strict comparison by name
-                if (isset($nurse['name']) && $nurse['name'] === $name) {
+                if (isset($nurse['name']) && $user['name'] === $name) {
                     // Build the result with required fields
                     $result = [
                         'name' => $nurse['name'],
@@ -89,19 +106,16 @@ final class NurseController extends AbstractController
     #[Route('/login', methods: ['POST'])]
     public function login(Request $request): JsonResponse
     {
-        $nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
+        //$nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
         $data = json_decode($request->getContent(), true);
-
-        foreach ($nurses as $nurse) {
-            if ($nurse['user'] === ($data['user'] ?? '') &&
-                $nurse['password'] === ($data['password'] ?? '')) {
-            
-                return $this->json(true);
-            }
-        }
-
-        
-        return $this->json(['error' => 'Credenciales inválidas'], 401);
+        $username = $data['username'] ?? '';
+        $pwd = $data['password'] ?? '';
+        $nurse = $nurseRepository->findOneBy(['username'=>$username]);
+        if($nurse)
+        return this->json(
+            [
+                'message'=>'Credenciales inválidas'
+            ]);
     }
 }
 
