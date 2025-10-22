@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\UserRepository;
 
 
 #[Route('/nurse')]
@@ -22,23 +23,25 @@ final class NurseController extends AbstractController
      * @return JsonResponse
      */
 
+    public function getAllDataBase(UserRepository $userRepository): JsonResponse
+    {
+        $nurses = $userRepository->findAll();
+        $data = [];
+        
+        foreach ($nurses as $nurse) {
+            $data[] = [
+                'id' => $nurse->getId(),
+                'name' => $nurse->getName(),
+                'password' => $nurse->getPassword(),
+                'user' => $nurse->getUser(),
+            ];
+        }
+        
+        return $this->json($data, Response::HTTP_OK);
+    }
+
+
     //codigo david
-public function dataBase(UserRepository $userRepository): JsonResponse
-{
-$nurses = $userRepository->findAll();
-$data = [];
-
-foreach ($nurses as $nurse) {
-    $data[] = [
-        'id' => $nurse->getId(),
-        'name' => $nurse->getName(),
-        'password' => $nurse->getPassword(),
-        'user' => $nurse->getUser(),
-    ];
-}
-
-return $this->json($data, Response::HTTP_OK);
-}
     public function findByName(string $name): JsonResponse
     {
         // Relative project path: public/nurses.json
@@ -54,7 +57,7 @@ return $this->json($data, Response::HTTP_OK);
         if (is_array($nurses)) {
             foreach ($nurses as $nurse) {
                 // Strict comparison by name
-                if (isset($nurse['name']) && $user['name'] === $name) {
+                if (isset($nurse['name']) && $nurse['name'] === $name) {
                     // Build the result with required fields
                     $result = [
                         'name' => $nurse['name'],
@@ -103,20 +106,39 @@ return $this->json($data, Response::HTTP_OK);
     }
     
     //Codigo Javier
+
+    
+    // #[Route('/login', methods: ['POST'])]
+    // public function login(Request $request): JsonResponse
+    // {
+    //     //$nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
+    //     $data = json_decode($request->getContent(), true);
+    //     $username = $data['username'] ?? '';
+    //     $pwd = $data['password'] ?? '';
+    //     $nurse = $nurseRepository->findOneBy(['username'=>$username]);
+    //     if($nurse)
+    //     return this->json(
+    //         [
+    //             'message'=>'Credenciales inválidas'
+    //         ]);
+    // }
+
     #[Route('/login', methods: ['POST'])]
-    public function login(Request $request): JsonResponse
+    public function login(Request $request, UserRepository $userRepository): JsonResponse
     {
-        //$nurses = json_decode(file_get_contents(__DIR__ . '/../../public/nurses.json'), true);
         $data = json_decode($request->getContent(), true);
         $username = $data['username'] ?? '';
-        $pwd = $data['password'] ?? '';
-        $nurse = $nurseRepository->findOneBy(['username'=>$username]);
-        if($nurse)
-        return this->json(
-            [
-                'message'=>'Credenciales inválidas'
-            ]);
+        $password = $data['password'] ?? '';
+
+        $nurse = $userRepository->findOneBy(['username' => $username]);
+
+        if ($nurse && $nurse->getPassword() === $password) {
+            return $this->json(['message' => 'Login successful'], 200);
+        }
+
+        return $this->json(['error' => 'Invalid credentials'], 401);
     }
+    
 }
 
 //Codigo de Olalla (Dejamos el de javier)
