@@ -80,30 +80,24 @@ final class NurseController extends AbstractController
     
     //codigo arnau
     // Esta ruta responderá a /nurse/index y se llamará app_nurse_index  
-    #[Route('/index', name: 'index')]
-    public function getAll(): JsonResponse
-    {
-        // Definimos la ruta absoluta del archivo nurses.json
-        $jDoc = __DIR__ . '/../../public/nurses.json';
+#[Route('/index', name: 'index')]
+public function getAll(UserRepository $userRepository): JsonResponse
+{
+    // Obtenemos todos los usuarios (en tu caso, enfermeras)
+    $nurses = $userRepository->findAll();
 
-        // Verificamos si el archivo existe antes de intentar leerlo
-        if (!file_exists($jDoc)) {
-            // Si no existe, devolvemos una respuesta JSON con un mensaje de error
-            // y el código de estado HTTP 404 (No encontrado)
-            return $this->json(['error' => 'El archivo JSON no existe.'], 404);
-        }
+    // Mapeamos los objetos a arrays para devolver en formato JSON
+    $data = array_map(function ($nurse) {
+        return [
+            'id' => $nurse->getId(),
+            'user' => $nurse->getUser(),
+            'password' => $nurse->getPassword(), 
+        ];
+    }, $nurses);
 
-        // Leemos el contenido completo del archivo JSON
-        $jsonContent = file_get_contents($jDoc);
+    return $this->json($data, 200);
+}
 
-        // Decodificamos el contenido JSON a un array asociativo de PHP
-        // El segundo parámetro "true" hace que devuelva array en lugar de objeto stdClass
-        $nurses = json_decode($jsonContent, true);
-
-        // Si todo va bien, devolvemos el contenido en formato JSON
-        // con el código 200 (que va bien)
-        return $this->json($nurses, 200);
-    }
     
     //Codigo Javier
 
