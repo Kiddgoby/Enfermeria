@@ -34,6 +34,26 @@ final class NurseController extends AbstractController
         }
     }
 
+
+    #[Route('/index', name: 'index')]
+public function getAll(UserRepository $userRepository): JsonResponse
+{
+    // Obtenemos todos los usuarios (en tu caso, enfermeras)
+    $nurses = $userRepository->findAll();
+
+    // Mapeamos los objetos a arrays para devolver en formato JSON
+    $data = array_map(function ($nurse) {
+        return [
+            'id' => $nurse->getId(),
+            'user' => $nurse->getUser(),
+            'password' => $nurse->getPassword(),
+        ];
+    }, $nurses);
+
+    return $this->json($data, 200);
+}
+
+
     //Codigo Javier
 
 
