@@ -14,7 +14,7 @@ final class NurseController extends AbstractController
 {
 
     // Route to call the findByName method to search for a nurse by name
-    #[Route('/name/{name}', name: 'app_nurse')]
+    #[Route('/all', name: 'app_nurse')]
 
     /**
      * Search for a nurse by name in a JSON file.
@@ -127,10 +127,10 @@ final class NurseController extends AbstractController
     public function login(Request $request, UserRepository $userRepository): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $username = $data['username'] ?? '';
+        $username = $data['user'] ?? '';
         $password = $data['password'] ?? '';
 
-        $nurse = $userRepository->findOneBy(['username' => $username]);
+        $nurse = $userRepository->findOneBy(['user' => $username]);
 
         if ($nurse && $nurse->getPassword() === $password) {
             return $this->json(['message' => 'Login successful'], 200);
