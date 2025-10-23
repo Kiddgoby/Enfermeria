@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,100 +15,28 @@ final class NurseController extends AbstractController
 {
 
     // Route to call the findByName method to search for a nurse by name
-    #[Route('/all', name: 'app_nurse')]
+    #[Route('/name/{name}', name: 'app_nurse_find_by_name')] 
 
-    /**
-     * Search for a nurse by name in a JSON file.
-     *
-     * @param string $name
-     * @return JsonResponse
-     */
-
-    public function getAllDataBase(UserRepository $userRepository): JsonResponse
+    public function findByName(string $name, UserRepository $userRepository): JsonResponse
     {
-        $nurses = $userRepository->findAll();
-        $data = [];
-        
-        foreach ($nurses as $nurse) {
-            $data[] = [
-                'id' => $nurse->getId(),
+        // Busca una enfermera por nombre usando el repositorio
+        $nurse = $userRepository->findOneByName($name);
+
+        if ($nurse) {
+            return $this->json([
                 'name' => $nurse->getName(),
-                'password' => $nurse->getPassword(),
                 'user' => $nurse->getUser(),
-            ];
-        }
-        
-        return $this->json($data, Response::HTTP_OK);
-    }
-
-
-    //codigo david
-    public function findByName(string $name): JsonResponse
-    {
-        // Relative project path: public/nurses.json
-        $file = __DIR__ . '/../../public/nurses.json';
-
-        // Try to read and decode the JSON. `true` to get an associative array.
-        $nurses = json_decode(file_get_contents($file), true);
-
-        // Default result: null indicates not found
-        $result = null;
-
-        // If $nurses is not an array (missing file or invalid JSON), avoid errors
-        if (is_array($nurses)) {
-            foreach ($nurses as $nurse) {
-                // Strict comparison by name
-                if (isset($nurse['name']) && $nurse['name'] === $name) {
-                    // Build the result with required fields
-                    $result = [
-                        'name' => $nurse['name'],
-                        'user' => $nurse['user'] ?? null,
-                        'password' => $nurse['password'] ?? null,
-                    ];
-                    break;
-                }
-            }
-        }
-
-        if ($result) {
-            // Return the found nurse
-            return $this->json($result, 200);
+                'password' => $nurse->getPassword(),
+            ], 200);
         } else {
-            // Return 404 error if not found
+            // Si no se encuentra, devuelve un error 404
             return $this->json(['error' => 'Nurse not found'], 404);
         }
     }
-    
-    //codigo arnau
-    // Esta ruta responderá a /nurse/index y se llamará app_nurse_index  
-    #[Route('/index', name: 'index')]
-    public function getAll(): JsonResponse
-    {
-        // Definimos la ruta absoluta del archivo nurses.json
-        $jDoc = __DIR__ . '/../../public/nurses.json';
 
-        // Verificamos si el archivo existe antes de intentar leerlo
-        if (!file_exists($jDoc)) {
-            // Si no existe, devolvemos una respuesta JSON con un mensaje de error
-            // y el código de estado HTTP 404 (No encontrado)
-            return $this->json(['error' => 'El archivo JSON no existe.'], 404);
-        }
-
-        // Leemos el contenido completo del archivo JSON
-        $jsonContent = file_get_contents($jDoc);
-
-        // Decodificamos el contenido JSON a un array asociativo de PHP
-        // El segundo parámetro "true" hace que devuelva array en lugar de objeto stdClass
-        $nurses = json_decode($jsonContent, true);
-
-        // Si todo va bien, devolvemos el contenido en formato JSON
-        // con el código 200 (que va bien)
-        return $this->json($nurses, 200);
-    }
-    
     //Codigo Javier
 
-    
+
     // #[Route('/login', methods: ['POST'])]
     // public function login(Request $request): JsonResponse
     // {
@@ -138,7 +67,6 @@ final class NurseController extends AbstractController
 
         return $this->json(['error' => 'Invalid credentials'], 401);
     }
-    
 }
 
 //Codigo de Olalla (Dejamos el de javier)
@@ -162,5 +90,3 @@ final class NurseController extends AbstractController
 //     }
     
 // }
-
- 
