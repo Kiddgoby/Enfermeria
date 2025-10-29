@@ -217,3 +217,38 @@ final class NurseController extends AbstractController
         }
     }
 }
+    #[Route('/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
+        /**
+         * Deletes a user by ID.
+         *
+         * @param \Symfony\Component\HttpFoundation\Request $request
+         * @param \App\Repository\UserRepository $userRepository
+         * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+         * @param int $id
+         * @return JsonResponse
+         */
+    public function delete(int $id, UserRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
+        {
+            // Attempt to find the user by the given ID.
+            $user = $userRepository->find($id);
+
+            // If no user is found, return a 404 Not Found response.
+            if (!$user) {
+                return $this->json(['error' => 'User not found'], 404);
+            }
+
+            try {
+                // Remove the user entity from the database.
+                $entityManager->remove($user);
+                $entityManager->flush();
+
+                // Return a 200 OK response indicating successful deletion.
+                return $this->json(['message' => 'User deleted successfully'], 200);
+            } catch (\Exception $e) {
+                // Catch any database or internal error and return a 500 response.
+                return $this->json(['error' => 'Failed to delete user: ' . $e->getMessage()], 500);
+            }
+        }
+
+
+}
