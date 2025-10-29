@@ -197,6 +197,45 @@ final class NurseController extends AbstractController
             'password' => $nurse->getPassword()
         ], 200);
     }
+    #[Route('/{id}', name: 'app_nurse_update', methods: ['PUT'])]
+    // Update nurse details
+    /**
+     * Summary of update
+     * @param int $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \App\Repository\UserRepository $userRepository
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function update(int $id, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $nurse = $userRepository->find($id);
+        if (!$nurse) {
+            return $this->json(['error' => 'Nurse not found'], 404);
+        }
+
+        if (isset($data['user'])) {
+            $nurse->setUser($data['user']);
+        }
+        if (isset($data['password'])) {
+            $nurse->setPassword($data['password']);
+        }
+        if (isset($data['name'])) {
+            $nurse->setName($data['name']);
+        }
+
+        try {
+            $entityManager->persist($nurse);
+            $entityManager->flush();
+
+            return $this->json(['message' => 'Nurse updated successfully'], 200);
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Failed to update nurse: ' . $e->getMessage()], 500);
+        }
+    }
+}
     #[Route('/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
         /**
          * Deletes a user by ID.
