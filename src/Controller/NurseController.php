@@ -178,7 +178,7 @@ final class NurseController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'get_nurse_by_id', methods: ['GET'])]
+    #[Route('/find/{id}', name: 'get_nurse_by_id', methods: ['GET'])]
     public function getNurseById(int $id, UserRepository $userRepository): JsonResponse
     {
         // Search for the nurse by their ID in the database
@@ -197,7 +197,8 @@ final class NurseController extends AbstractController
             'password' => $nurse->getPassword()
         ], 200);
     }
-    #[Route('/{id}', name: 'app_nurse_update', methods: ['PUT'])]
+
+    #[Route('/update/{id}', name: 'app_nurse_update', methods: ['PUT'])]
     // Update nurse details
     /**
      * Summary of update
@@ -235,7 +236,6 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Failed to update nurse: ' . $e->getMessage()], 500);
         }
     }
-}
     #[Route('/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
         /**
          * Deletes a user by ID.
@@ -268,6 +268,7 @@ final class NurseController extends AbstractController
                 return $this->json(['error' => 'Failed to delete user: ' . $e->getMessage()], 500);
             }
         }
-
-
 }
+
+
+    
