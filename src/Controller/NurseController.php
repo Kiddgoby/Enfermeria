@@ -177,4 +177,24 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Failed to create nurse: ' . $e->getMessage()], 500);
         }
     }
+
+    #[Route('/{id}', name: 'get_nurse_by_id', methods: ['GET'])]
+    public function getNurseById(int $id, UserRepository $userRepository): JsonResponse
+    {
+        // Search for the nurse by their ID in the database
+        $nurse = $userRepository->find($id);
+
+        // If it doesn't exist, return a 404 error
+        if (!$nurse) {
+            return $this->json(['error' => 'Nurse not found'], 404);
+        }
+        
+        // If it exists, return the nurse's data with a 200 OK status code
+        return $this->json([
+            'id' => $nurse->getId(),
+            'user' => $nurse->getUser(),
+            'name' => $nurse->getName(),
+            'password' => $nurse->getPassword()
+        ], 200);
+    }
 }
