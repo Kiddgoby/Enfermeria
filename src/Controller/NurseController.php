@@ -169,7 +169,9 @@ final class NurseController extends AbstractController
 
             // If the nurse is created successfully, return a 201 Created response
             // along with a success message and the ID of the newly created nurse.
-            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);
+            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 200);
+
+            // return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);
         } catch (\Exception $e) {
             // Catch any unexpected exceptions that might occur during the database operation
             // (e.g., database connection issues, constraint violations not caught by previous checks).
@@ -178,7 +180,27 @@ final class NurseController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'app_nurse_update', methods: ['PUT'])]
+    #[Route('/find/{id}', name: 'get_nurse_by_id', methods: ['GET'])]
+    public function getNurseById(int $id, UserRepository $userRepository): JsonResponse
+    {
+        // Search for the nurse by their ID in the database
+        $nurse = $userRepository->find($id);
+
+        // If it doesn't exist, return a 404 error
+        if (!$nurse) {
+            return $this->json(['error' => 'Nurse not found'], 404);
+        }
+        
+        // If it exists, return the nurse's data with a 200 OK status code
+        return $this->json([
+            'id' => $nurse->getId(),
+            'user' => $nurse->getUser(),
+            'name' => $nurse->getName(),
+            'password' => $nurse->getPassword()
+        ], 200);
+    }
+
+    #[Route('/update/{id}', name: 'app_nurse_update', methods: ['PUT'])]
     // Update nurse details
     /**
      * Summary of update
@@ -216,7 +238,6 @@ final class NurseController extends AbstractController
             return $this->json(['error' => 'Failed to update nurse: ' . $e->getMessage()], 500);
         }
     }
-}
     #[Route('/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
         /**
          * Deletes a user by ID.
@@ -249,6 +270,7 @@ final class NurseController extends AbstractController
                 return $this->json(['error' => 'Failed to delete user: ' . $e->getMessage()], 500);
             }
         }
-
-
 }
+
+
+    
