@@ -169,9 +169,8 @@ final class NurseController extends AbstractController
 
             // If the nurse is created successfully, return a 201 Created response
             // along with a success message and the ID of the newly created nurse.
-            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 200);
+            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);            
 
-            // return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);
         } catch (\Exception $e) {
             // Catch any unexpected exceptions that might occur during the database operation
             // (e.g., database connection issues, constraint violations not caught by previous checks).
