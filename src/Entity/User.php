@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
 class User
 {
     #[ORM\Id]
@@ -14,20 +13,14 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $lastName = null;
-
-    #[ORM\Column(length: 50, unique: true)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 20, nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $user = null;
 
     public function getId(): ?int
     {
@@ -39,31 +32,10 @@ class User
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): static
     {
         $this->name = $name;
-        return $this;
-    }
 
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-        return $this;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
         return $this;
     }
 
@@ -72,20 +44,22 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getUser(): ?string
     {
-        return $this->image;
+        return $this->user;
     }
 
-    public function setImage(?string $image): self
+    public function setUser(?string $user): static
     {
-        $this->image = $image;
+        $this->user = $user;
+
         return $this;
     }
 }
