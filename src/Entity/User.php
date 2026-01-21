@@ -20,7 +20,7 @@ class User
     private ?string $password = null;
 
     #[ORM\Column(name: "username", length: 50, nullable: true)] // <--- Añadimos name: "username"
-    private ?string $user = null;
+    private ?string $username = null;
 
     public function getId(): ?int
     {
@@ -53,12 +53,12 @@ class User
 
     public function getUser(): ?string
     {
-        return $this->user;
+        return $this->username;
     }
 
-    public function setUser(?string $user): static
+    public function setUser(?string $username): static
     {
-        $this->user = $user;
+        $this->username = $username;
 
         return $this;
     }

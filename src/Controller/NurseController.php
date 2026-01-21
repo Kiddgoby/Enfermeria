@@ -52,7 +52,7 @@ final class NurseController extends AbstractController
         $data = array_map(function ($nurse) {
             return [
                 'id' => $nurse->getId(),
-                'user' => $nurse->getUser(),
+                'username' => $nurse->getUser(),
                 'password' => $nurse->getPassword(),
             ];
         }, $nurses);
@@ -169,7 +169,7 @@ final class NurseController extends AbstractController
 
             // If the nurse is created successfully, return a 201 Created response
             // along with a success message and the ID of the newly created nurse.
-            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);            
+            return $this->json(['message' => 'Nurse created successfully', 'id' => $nurse->getId()], 201);
 
         } catch (\Exception $e) {
             // Catch any unexpected exceptions that might occur during the database operation
