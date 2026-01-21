@@ -18,9 +18,9 @@ class User
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $password = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $user = null;
+  
+    #[ORM\Column(name: "username", length: 50, nullable: true)] // <--- Añadimos name: "username"
+    private ?string $username = null;
 
     public function getId(): ?int
     {
@@ -53,12 +53,14 @@ class User
 
     public function getUser(): ?string
     {
-        return $this->user;
+        return $this->username;
     }
 
-    public function setUser(?string $user): static
+    public function setUser(?string $username): static
     {
-        $this->user = $user;
+        $this->username = $username;
+        return $this->user;
+    }
 
         return $this;
     }
