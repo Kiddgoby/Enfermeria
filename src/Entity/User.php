@@ -19,7 +19,7 @@ class User
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column(name: "username", length: 50, nullable: true)] // <--- Añadimos name: "username"
+    #[ORM\Column(name: "username", length: 50, nullable: true)]
     private ?string $username = null;
 
     public function getId(): ?int

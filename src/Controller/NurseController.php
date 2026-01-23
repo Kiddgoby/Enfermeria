@@ -152,9 +152,8 @@ final class NurseController extends AbstractController
         // If it exists, return the nurse's data with a 200 OK status code
         return $this->json([
             'id' => $nurse->getId(),
-            'user' => $nurse->getUser(),
             'name' => $nurse->getName(),
-            'password' => $nurse->getPassword()
+            'user' => $nurse->getUser(),            
         ], 200);
     }
 
