@@ -93,17 +93,17 @@ final class NurseController extends AbstractController
 
         // Validate that all required data ('user', 'password', 'name') is present in the request body.
         // If any required field is missing, return a 400 Bad Request error.
-        if (!isset($data['user']) || !isset($data['password']) || !isset($data['name'])) {
-            return $this->json(['error' => 'Missing "user", "password", or "name" in request body'], 400);
+        if (!isset($data['username']) || !isset($data['password']) || !isset($data['name'])) {
+            return $this->json(['error' => 'Missing "username", "password", or "name" in request body'], 400);
         }
 
         // Extract the user, password, and name from the decoded request data.
-        $username = $data['user'];
+        $username = $data['username'];
         $password = $data['password'];
         $name = $data['name'];
 
         // Check if a user with the provided username already exists in the database.
-        $existingUser = $userRepository->findOneBy(['user' => $username]);
+        $existingUser = $userRepository->findOneBy(['username' => $username]);
         if ($existingUser) {
             // If a user with this username exists, return a 400 Bad Request error,
             // indicating that the username is already taken.
