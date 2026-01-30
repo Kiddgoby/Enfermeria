@@ -31,6 +31,7 @@ final class NurseController extends AbstractController
 
         if ($nurse) {
             return $this->json([
+                'id' => (int)$nurse->getId(),
                 'name' => $nurse->getName(),
                 'user' => $nurse->getUser(),
                 'password' => $nurse->getPassword(),
@@ -74,8 +75,11 @@ final class NurseController extends AbstractController
             return $this->json(['message' => 'Login successful'], 200);
         }
 
-        return $this->json(['error' => 'Invalid credentials'], 401);
-    }
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'username' => $username->getUsername(),
+            'token' => 'fake-token'
+        ]);    }
 
     #[Route('/register', methods: ['POST'])]
 
