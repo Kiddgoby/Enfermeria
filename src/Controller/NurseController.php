@@ -182,7 +182,7 @@ final class NurseController extends AbstractController
 
         if (isset($data['user'])) {
             $nurse->setUser($data['user']);
-        }
+        }   
         if (isset($data['password'])) {
             $nurse->setPassword($data['password']);
         }
