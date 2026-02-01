@@ -158,6 +158,7 @@ final class NurseController extends AbstractController
             'id' => $nurse->getId(),
             'name' => $nurse->getName(),
             'user' => $nurse->getUser(),            
+            'password' => $nurse->getPassword(),
         ], 200);
     }
 
